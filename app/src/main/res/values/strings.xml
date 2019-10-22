@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">phonetage</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Phone Tags</string>
+    <string name="nav_header_subtitle">Phone Tags</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_blank">Blank list</string>
+    <string name="menu_help">Help using app</string>
+    <string name="menu_share">Friend Share</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_report">Report error</string>
+    <string name="menu_purchase">Purchase</string>
+</resources>
