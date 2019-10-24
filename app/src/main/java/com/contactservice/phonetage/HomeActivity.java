@@ -50,23 +50,11 @@ public class HomeActivity extends ParentActivity implements NavigationView.OnNav
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.bringToFront();
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.fr_blank, R.id.fr_help, R.id.fr_share,
+                R.id.fr_mainview, R.id.fr_blank, R.id.fr_help, R.id.fr_share,
                 R.id.fr_settings, R.id.fr_report, R.id.fr_purchase)
                 .setDrawerLayout(drawer)
                 .build();
@@ -79,7 +67,7 @@ public class HomeActivity extends ParentActivity implements NavigationView.OnNav
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
+//        getMenuInflater().inflate(R.menu.home, menu);
 
         return true;
     }
@@ -97,10 +85,15 @@ public class HomeActivity extends ParentActivity implements NavigationView.OnNav
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         menuItem.setCheckable(true);
         drawer.closeDrawers();
-
         int id = menuItem.getItemId();
-        Log.e("odomf", String.valueOf(id));
+        
         switch (id){
+
+            case R.id.nav_mainview:
+                navController.navigate(R.id.fr_mainview);
+                break;
+
+
             case R.id.nav_blank:
                 navController.navigate(R.id.fr_blank);
                 break;

@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/fr_blank">
+    app:startDestination="@+id/fr_mainview">
+
+    <fragment
+        android:id="@+id/fr_mainview"
+        android:name="com.contactservice.phonetage.ui.Mainview"
+        android:label="@string/menu_mainview"
+        tools:layout="@layout/mainview_fragment" />
 
     <fragment
         android:id="@+id/fr_blank"
