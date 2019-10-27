@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_menu_done"
+        android:title="@string/menu_done"
+        android:icon="@drawable/ic_check_black_24dp" />
+    <item android:id="@+id/action_menu_dropped"
+        android:title="@string/menu_dropped"
+        android:icon="@drawable/ic_remove_black_24dp" />
+
+    <item android:id="@+id/action_menu_delete"
+        android:title="@string/menu_delete"
+        android:icon="@drawable/ic_clear_black_24dp" />
+
+    <item android:id="@+id/action_menu_deletehide"
+        android:title="@string/menu_delete_hide"
+        android:icon="@drawable/ic_not_interested_black_24dp" />
+
+    <item android:id="@+id/action_menu_deleted"
+        android:title="@string/menu_deleted"
+        android:icon="@drawable/ic_delete_black_24dp" />
+
+</menu>

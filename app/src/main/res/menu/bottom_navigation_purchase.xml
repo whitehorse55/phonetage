@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_purchase_done"
+        android:title="@string/menu_done"
+        android:icon="@drawable/ic_check_black_24dp" />
+
+    <item android:id="@+id/action_purchase_process"
+        android:title="@string/process"
+        android:icon="@drawable/ic_hdr_strong_black_24dp"/>
+
+    <item android:id="@+id/action_purchase_follow"
+        android:title="@string/follow"
+        android:icon="@drawable/ic_mood_black_24dp"/>
+
+    <item android:id="@+id/action_menu_dropped"
+        android:title="@string/menu_dropped"
+        android:icon="@drawable/ic_remove_black_24dp" />
+
+    <item android:id="@+id/action_menu_delete"
+        android:title="@string/menu_delete"
+        android:icon="@drawable/ic_clear_black_24dp" />
+
+
+</menu>

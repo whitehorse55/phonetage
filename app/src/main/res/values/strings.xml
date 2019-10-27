@@ -16,9 +16,22 @@
     <string name="menu_report">Report error</string>
     <string name="menu_purchase">Purchase</string>
 
+    <string name="menu_done">Done</string>
+
+    <string name="menu_dropped">Dropped</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_delete_hide">Delete &amp; Hide</string>
+    <string name="menu_deleted">Deleted</string>
+    <string name="process">In-process</string>
+
+    <string name="btn_send">Send</string>
+    <string name="txt_phonenumber">Phone number</string>
+
+    <string name="follow">Follow-up</string>
     <string-array name="tablist">
         <item>Task</item>
         <item>QuickTag</item>
         <item>Filter</item>
     </string-array>
+
 </resources>
