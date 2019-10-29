@@ -8,20 +8,25 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomnavbar">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyle_logview"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_height"
-            android:background="@color/colorblack"
-            app:itemIconTint="@drawable/bottom_navigation_colors"
-            app:itemTextColor="@drawable/bottom_navigation_colors"
-            app:menu="@menu/bottom_navigation_menu"
-            android:layout_gravity="bottom">
-
-        </com.google.android.material.bottomnavigation.BottomNavigationView>
-
+            android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
     </androidx.core.widget.NestedScrollView>
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:id="@+id/bottomnavbar"
+        android:background="@color/colorblack"
+        app:itemIconTint="@drawable/bottom_navigation_colors"
+        app:itemTextColor="@drawable/bottom_navigation_colors"
+        app:menu="@menu/bottom_navigation_menu"
+        android:layout_alignParentBottom="true">
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
+    <include layout="@layout/lay_progress"/>
 </RelativeLayout>

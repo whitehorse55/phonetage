@@ -2,6 +2,7 @@ package com.contactservice.phonetage;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -23,6 +24,10 @@ import com.contactservice.phonetage.Utils.MarshPermssions;
 
 import java.util.ArrayList;
 
+import static android.Manifest.permission.READ_CALL_LOG;
+import static android.Manifest.permission.READ_PHONE_NUMBERS;
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.READ_SMS;
 import static com.contactservice.phonetage.Utils.MarshPermssions.READ_CALL_LOGS;
 import static com.contactservice.phonetage.Utils.MarshPermssions.READ_PHONE_STATUS;
 
@@ -34,6 +39,7 @@ public class SplashActivity extends ParentActivity {
             CallLog.Calls.DATE,
             CallLog.Calls.DURATION,
             CallLog.Calls.TYPE,
+            CallLog.Calls.CACHED_NAME
     };
 
     MarshPermssions marshPermssions;
@@ -49,8 +55,6 @@ public class SplashActivity extends ParentActivity {
 
         marshPermssions = new MarshPermssions(this);
         firebaseDB = new FirebaseDB(this);
-
-        getcurrentphonenumber();
         getlogs();
 
     }
@@ -67,80 +71,88 @@ public class SplashActivity extends ParentActivity {
     }
 
 
-
     public void getlogs() {
-
         array_log = new ArrayList<>();
+        this.getcurrentphonenumber();
+        mPhoneNumber = "123456";
+        LocalStorage.saveString(this, LocalStorage.SharePreKEY.phonenumber, mPhoneNumber);
+        @SuppressLint("MissingPermission") Cursor c = getApplicationContext().getContentResolver().query(CallLog.Calls.CONTENT_URI, projection, null,
+                null, CallLog.Calls.DATE + " DESC");
 
-        if (marshPermssions.checkphonecalllogs()) {
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            do {
+                String callerID = c.getString(c.getColumnIndex(CallLog.Calls._ID));
+                String callerNumber = c.getString(c.getColumnIndex(CallLog.Calls.NUMBER));
+                long callDateandTime = c.getLong(c.getColumnIndex(CallLog.Calls.DATE));
+                long callDuration = c.getLong(c.getColumnIndex(CallLog.Calls.DURATION));
+                int callType = c.getInt(c.getColumnIndex(CallLog.Calls.TYPE));
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider callin
-                    return;
+                if (callType == CallLog.Calls.INCOMING_TYPE) {
+                    //incoming call
+                } else if (callType == CallLog.Calls.OUTGOING_TYPE) {
+                    //outgoing call
+                } else if (callType == CallLog.Calls.MISSED_TYPE) {
+                    //missed call
                 }
-            }
 
-            Cursor c = getApplicationContext().getContentResolver().query(CallLog.Calls.CONTENT_URI, projection, null,
-                    null, CallLog.Calls.DATE + " DESC");
-
-            if (c.getCount() > 0)
-            {
-                c.moveToFirst();
-                do{
-                    String callerID = c.getString(c.getColumnIndex(CallLog.Calls._ID));
-                    String callerNumber = c.getString(c.getColumnIndex(CallLog.Calls.NUMBER));
-                    long callDateandTime = c.getLong(c.getColumnIndex(CallLog.Calls.DATE));
-                    long callDuration = c.getLong(c.getColumnIndex(CallLog.Calls.DURATION));
-                    int callType = c.getInt(c.getColumnIndex(CallLog.Calls.TYPE));
-
-                    if(callType == CallLog.Calls.INCOMING_TYPE)
-                    {
-                        //incoming call
-                    }
-                    else if(callType == CallLog.Calls.OUTGOING_TYPE)
-                    {
-                        //outgoing call
-                    }
-                    else if(callType == CallLog.Calls.MISSED_TYPE)
-                    {
-                        //missed call
-                    }
-
-                    Model_Log model_log = new Model_Log();
-                    model_log.setPhonenumber(mPhoneNumber);
-                    model_log.setCallID(callerID);
-                    model_log.setCallduration(String.valueOf(callDuration));
-                    model_log.setCalltime(String.valueOf(callDateandTime));
-                    model_log.setCallNumber(callerNumber);
-                    array_log.add(model_log);
+                Model_Log model_log = new Model_Log();
+                model_log.setPhonenumber(mPhoneNumber);
+                model_log.setCallID(callerID);
+                model_log.setCallduration(String.valueOf(callDuration));
+                model_log.setCalltime(String.valueOf(callDateandTime));
+                model_log.setCallNumber(callerNumber);
+                array_log.add(model_log);
 
 
-                }while(c.moveToNext());
+            } while (c.moveToNext());
 
-                firebaseDB.saveDataArray(array_log);
-                gotoMainPage();
+            firebaseDB.saveDataArray(array_log);
+            gotoMainPage();
 
-            }else{
-                    gotoMainPage();
-            }
-
-        }else{
-            marshPermssions.requestcalllogs(READ_CALL_LOGS);
-            getlogs();
+        } else {
+            gotoMainPage();
         }
+
+
 
     }
 
-    @SuppressLint("MissingPermission")
+
+
     public void getcurrentphonenumber() {
-        if(marshPermssions.checkphonecalllogs()){
-            TelephonyManager tMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, READ_SMS) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, READ_PHONE_NUMBERS) ==
+                        PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                READ_CALL_LOG) == PackageManager.PERMISSION_DENIED) {
+            TelephonyManager tMgr = (TelephonyManager)   this.getSystemService(Context.TELEPHONY_SERVICE);
             mPhoneNumber = tMgr.getLine1Number();
-            LocalStorage.getString(this, mPhoneNumber, "");
-        }else{
-            marshPermssions.requestreadphonestatus(READ_PHONE_STATUS);
-            getcurrentphonenumber();
+            return;
+        } else {
+            requestPermission();
+        }
+    }
+
+
+    private void requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{READ_SMS, READ_PHONE_NUMBERS, READ_PHONE_STATE, READ_CALL_LOG}, 100);
+        }
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 100:
+                TelephonyManager tMgr = (TelephonyManager)  this.getSystemService(Context.TELEPHONY_SERVICE);
+                if (ActivityCompat.checkSelfPermission(this, READ_SMS) !=
+                        PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                        READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED  &&
+                        ActivityCompat.checkSelfPermission(this, READ_PHONE_STATE) !=      PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                mPhoneNumber = tMgr.getLine1Number();
+                break;
         }
     }
 }
